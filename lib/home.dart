@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ayto_driver_x/signup.dart';
 
 import 'login.dart';
 
@@ -16,7 +17,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo[900],
-        title: Text('Home'),
+        title: const Text('Home'),
       ),
       body: Center(
         child: Center(
@@ -33,15 +34,15 @@ class _HomeState extends State<Home> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Logout",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.red,
                       fontSize: 30,
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.logout),
+                    icon: const Icon(Icons.logout),
                     onPressed: () async {
                       await FirebaseAuth.instance.signOut();
                       Navigator.pushReplacement(
@@ -52,6 +53,25 @@ class _HomeState extends State<Home> {
                       );
                     },
                   ),
+                 /* MaterialButton(
+                    color: Colors.indigo[900],
+                    onPressed: () {
+                      MaterialPageRoute(
+                        builder: (context) => SignupScreen(),
+                      );
+                    }
+                      child:
+                      Text(
+                        "Signup",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),*/
+
+
+
+
                 ],
               ),
             ],
