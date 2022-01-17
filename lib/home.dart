@@ -5,6 +5,8 @@ import 'package:ayto_driver_x/signup.dart';
 import 'login.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -36,7 +38,7 @@ class _HomeState extends State<Home> {
                 children: [
                   const Text(
                     "Logout",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.red,
                       fontSize: 30,
                     ),
@@ -53,21 +55,15 @@ class _HomeState extends State<Home> {
                       );
                     },
                   ),
-                 /* MaterialButton(
-                    color: Colors.indigo[900],
+                  MaterialButton(
+                    color: Colors.lightGreenAccent,
+                      child: const Text("Sign Up"),
                     onPressed: () {
-                      MaterialPageRoute(
-                        builder: (context) => SignupScreen(),
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignupScreen())
                       );
-                    }
-                      child:
-                      Text(
-                        "Signup",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),*/
+                    }),
+
+
 
 
 
