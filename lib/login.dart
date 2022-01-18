@@ -20,12 +20,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String verificationID = "";
   String srm="";
+  final _database=FirebaseDatabase.instance.ref();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _activeListeners();
+  }
+  void _activeListeners(){
+    final User user=auth.currentUser!;
+    final id=user.uid;
+    _database.child('Drivers/${user.uid}/FirstName').onValue.listen((event) {
+      final Object? description=event.snapshot.value;
+      setState(() {
+        if (description == null) {
+          srm=srm; // Safe
+        }
+        else
+          {
+            srm='$description';
+          }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "AYTO-DRIVER",
           style: TextStyle(
             fontSize: 30,
@@ -40,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextField(
               controller: phoneController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Phone Number',
                 prefix: Padding(
                   padding: EdgeInsets.all(4),
@@ -53,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Visibility(
               child: TextField(
                 controller: otpController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'OTP',
                   prefix: Padding(
                     padding: EdgeInsets.all(4),
@@ -65,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               visible: otpVisibility,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             MaterialButton(
@@ -79,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: Text(
                 otpVisibility ? "Verify" : "Login",
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                 ),
@@ -131,13 +155,13 @@ class _LoginScreenState extends State<LoginScreen> {
     ).whenComplete(
       () {
         if(srm.isEmpty) {
-
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => const SignupScreen(),
             ),
           );
+
         }
         else {
           Navigator.pushReplacement(
@@ -146,6 +170,8 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (context) => const Home(),
             ),
           );
+
+
         }
 
       },
