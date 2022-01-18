@@ -213,7 +213,10 @@ class _SignupScreenState extends State<SignupScreen> {
   return;
 
   }
-  DatabaseReference dref =FirebaseDatabase.instance.ref().child("Driver");
+
+  registerUser();
+
+  //DatabaseReference dref =FirebaseDatabase.instance.ref().child("Driver");
   Navigator.pushReplacement(
     context,
     MaterialPageRoute(
