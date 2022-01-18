@@ -48,6 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
     'Email':emailController.text,
     'AlternatePhoneNumber':user.phoneNumber,
 };
+    dref.set(map);
 
   }
 
