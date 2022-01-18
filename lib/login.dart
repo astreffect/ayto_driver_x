@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String verificationID = "";
   String srm="";
   final _database=FirebaseDatabase.instance.ref();
-
+//int c=0;
   @override
   void initState() {
     // TODO: implement initState
@@ -29,18 +29,22 @@ class _LoginScreenState extends State<LoginScreen> {
     _activeListeners();
   }
   void _activeListeners(){
-    final User user=auth.currentUser!;
-    final id=user.uid;
-    _database.child('Drivers/${user.uid}/FirstName').onValue.listen((event) {
-      final Object? description=event.snapshot.value;
+    final User? user=auth.currentUser;
+    final id=user?.uid ;
+    _database.child('Driver/${user?.uid}/FirstName').onValue.listen((event) {
+      final Object? description=event.snapshot.value ?? false;
       setState(() {
-        if (description == null) {
-          srm=srm; // Safe
+        print('Description=$description');
+        srm='$description';
+        /*if (description == null) {
+          // Safe
+          c=0;
         }
         else
           {
-            srm='$description';
-          }
+            c=1;
+            //srm='$description' ?? "false";
+          }*/
       });
     });
   }
@@ -154,7 +158,17 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     ).whenComplete(
       () {
-        if(srm.isEmpty) {
+        print('SRM=$srm');
+        Fluttertoast.showToast(
+          msg: srm,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        if(srm.compareTo('false')==0) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
