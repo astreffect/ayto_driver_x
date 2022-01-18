@@ -55,13 +55,13 @@ class _HomeState extends State<Home> {
                       );
                     },
                   ),
-                  MaterialButton(
+                  /*MaterialButton(
                     color: Colors.lightGreenAccent,
                       child: const Text("Sign Up"),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignupScreen())
                       );
-                    }),
+                    }),*/
 
 
 

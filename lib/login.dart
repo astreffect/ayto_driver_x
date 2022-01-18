@@ -1,7 +1,9 @@
 import 'package:ayto_driver_x/home.dart';
+import 'package:ayto_driver_x/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool otpVisibility = false;
 
   String verificationID = "";
+  String srm="";
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +130,24 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     ).whenComplete(
       () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Home(),
-          ),
-        );
+        if(srm.isEmpty) {
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SignupScreen(),
+            ),
+          );
+        }
+        else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Home(),
+            ),
+          );
+        }
+
       },
     );
   }
