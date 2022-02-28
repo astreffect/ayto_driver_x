@@ -1,3 +1,4 @@
+import 'package:ayto_driver_x/mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ayto_driver_x/signup.dart';
@@ -55,13 +56,13 @@ class _HomeState extends State<Home> {
                       );
                     },
                   ),
-                  /*MaterialButton(
+                  MaterialButton(
                     color: Colors.lightGreenAccent,
                       child: const Text("Sign Up"),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignupScreen())
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage())
                       );
-                    }),*/
+                    }),
 
 
 
