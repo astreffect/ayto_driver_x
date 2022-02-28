@@ -1,5 +1,5 @@
 import 'package:ayto_driver_x/brand_colors.dart';
-//import 'package:cabdriver/globalvariabels.dart';
+import 'package:ayto_driver_x/globalvariabels.dart';
 //import 'package:cabdriver/tabs/earningstab.dart';
 //import 'package:ayto_driver_x/tabs/hometab.dart';
 import 'package:ayto_driver_x/tabs/profiletab.dart';

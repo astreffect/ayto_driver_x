@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                   ),
                   MaterialButton(
                     color: Colors.lightGreenAccent,
-                      child: const Text("Sign Up"),
+                      child: const Text("Main Page"),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage())
                       );
