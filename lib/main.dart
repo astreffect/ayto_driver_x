@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ayto_driver_x/loginstate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'home.dart';
 import 'login.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     "homepage": (context) => const Home(),
     "login": (context)=>LoginScreen(),
     },*/
-      home: LoginScreen(),
+      home: LoginState(),
       debugShowCheckedModeBanner: false,
       color: Colors.indigo[900],
     );

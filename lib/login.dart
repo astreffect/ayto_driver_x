@@ -1,5 +1,5 @@
-import 'package:ayto_driver_x/home.dart';
-import 'package:ayto_driver_x/signup.dart';
+import 'package:ayto_driver_x/mainpage.dart';
+import 'package:ayto_driver_x/loginstate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const SignupScreen(),
+              builder: (context) =>  LoginState(),
             ),
           );
 
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
 
             MaterialPageRoute(
-              builder: (context) => const Home(),
+              builder: (context) => const MainPage(),
 
             ),
                   (e) => false,

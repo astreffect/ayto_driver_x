@@ -1,10 +1,9 @@
 
 import 'package:ayto_driver_x/Updater.dart';
-import 'package:ayto_driver_x/login.dart';
 import 'package:flutter/material.dart';
 import 'package:ayto_driver_x/brand_colors.dart';
 import 'package:ayto_driver_x/tabs/mydivider.dart';
-
+import 'package:ayto_driver_x/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -25,6 +24,8 @@ class _pmx extends State<MyDrawer>
 
   String verificationID = "";
   String srm="";
+  String srm2="";
+  String srm3="";
   final _database=FirebaseDatabase.instance.ref();
 //int c=0;
   @override
@@ -41,9 +42,22 @@ class _pmx extends State<MyDrawer>
       setState(() {
         print('Description=$description');
         srm='$description';
+        srm3=srm;
 
       });
     });
+    _database.child('Driver/${user?.uid}/LastName').onValue.listen((event) {
+      final Object? description=event.snapshot.value ?? false;
+      setState(() {
+        print('Description2=$description');
+        srm2='$description';
+        srm3=srm3+" "+srm2;
+        print('Description3=${srm3}');
+
+      });
+    });
+
+
 
   }
   @override
@@ -60,13 +74,14 @@ class _pmx extends State<MyDrawer>
                   ),
                   child: Row(
                     children: [
-                      Image.network('https://picsum.photos/250?image=9',
+                      Image.network('https://www.gstatic.com/webp/gallery3/2_webp_a.png',
                         height: 60,width: 60,),
                       const SizedBox(width: 15,),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children:  [
-                          Text('$srm',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+
+                          Text('$srm3',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                           SizedBox(height: 5,),
                           Text("View Profile",)
 
@@ -108,9 +123,19 @@ class _pmx extends State<MyDrawer>
               leading:  Icon(Icons.info_outline),
               title: Text("About",style: TextStyle(fontSize: 16),),
             ),
-            const ListTile(
+             ListTile(
               leading:  Icon(Icons.logout),
               title: Text("Log Out",style: TextStyle(fontSize: 16),),
+               enabled: true,
+               onTap: () async{
+                 await FirebaseAuth.instance.signOut();
+                 Navigator.pushReplacement(
+                   context,
+                   MaterialPageRoute(
+                     builder: (context) => LoginScreen(),
+                   ),
+                 );
+               },
             )
           ],
         )
