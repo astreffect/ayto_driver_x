@@ -1,10 +1,51 @@
+
+import 'package:ayto_driver_x/Updater.dart';
+import 'package:ayto_driver_x/login.dart';
 import 'package:flutter/material.dart';
 import 'package:ayto_driver_x/brand_colors.dart';
 import 'package:ayto_driver_x/tabs/mydivider.dart';
 
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
+
+
+
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key}) : super(key: key);
+  @override
+  _pmx createState() => _pmx();
+}
+class _pmx extends State<MyDrawer>
+{
+
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+
+  String verificationID = "";
+  String srm="";
+  final _database=FirebaseDatabase.instance.ref();
+//int c=0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _activeListeners();
+  }
+  void _activeListeners(){
+    final User? user=auth.currentUser;
+    final id=user?.uid ;
+    _database.child('Driver/${user?.uid}/FirstName').onValue.listen((event) {
+      final Object? description=event.snapshot.value ?? false;
+      setState(() {
+        print('Description=$description');
+        srm='$description';
+
+      });
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -24,8 +65,8 @@ class MyDrawer extends StatelessWidget {
                       const SizedBox(width: 15,),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text("Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                        children:  [
+                          Text('$srm',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                           SizedBox(height: 5,),
                           Text("View Profile",)
 
@@ -39,9 +80,16 @@ class MyDrawer extends StatelessWidget {
             ),
             const MyDivider(),
             const SizedBox(height: 10,),
-            const ListTile(
+             ListTile(
               leading:  Icon(Icons.face_outlined),
               title: Text("Account",style: TextStyle(fontSize: 16),),
+              enabled: true,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Updater()),
+                  );
+                },
             ),
             const ListTile(
               leading:  Icon(Icons.credit_card),
