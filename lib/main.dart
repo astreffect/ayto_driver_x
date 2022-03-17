@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     "homepage": (context) => const Home(),
     "login": (context)=>LoginScreen(),
     },*/
-      home: Home(),
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
       color: Colors.indigo[900],
     );

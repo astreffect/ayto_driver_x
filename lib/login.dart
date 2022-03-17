@@ -179,11 +179,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
         }
         else {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
+
             MaterialPageRoute(
               builder: (context) => const Home(),
+
             ),
+                  (e) => false,
           );
 
 
