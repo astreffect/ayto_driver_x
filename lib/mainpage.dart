@@ -30,6 +30,8 @@ class _MainPageState extends State<MainPage> {
   double mapBottomPadding =0;
   var geolocator =Geolocator();
   late Position currentPosition;
+  String OnOf="Online";
+  Color myColour=Colors.red;
 
   void setPositionlocator() async{
 
@@ -43,7 +45,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(23.421070025226406, 86.20774238210358),
     zoom: 14.4746,
   );
   @override
@@ -149,7 +151,24 @@ class _MainPageState extends State<MainPage> {
                         ],
                       ),),
                     const SizedBox(height: 22,),
-                    Container(
+
+                GestureDetector(
+                  onTap: () {
+                    print("Tapped a Container");
+
+                    setState(() {
+                      if(OnOf.compareTo("Online")==0)
+                      {
+                        OnOf="Offline";
+                        myColour=Colors.grey;
+                      }
+                      else{
+                        OnOf="Online";
+                        myColour=Colors.red;
+                      }
+                    });
+                  },
+                    child:Container(
                       decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(15.0)),
@@ -160,15 +179,20 @@ class _MainPageState extends State<MainPage> {
                               offset: Offset(0.7, 0.7)), ]
                       ),
                       child: Row(
-                        children: const [
+                        children:  [
                           Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Icon(Icons.online_prediction,color: Colors.red,),
+                            child: Icon(Icons.online_prediction,color: myColour,),
                           ),
-                          SizedBox(width: 22,),
-                          Text("Online"),
+                          SizedBox(
+                            width: 22,
+
+                          ),
+                          Text('$OnOf'),
+
 
                         ],
+
                       ),),
                     //   SizedBox(height: 22,),
                     // Container(
@@ -194,7 +218,7 @@ class _MainPageState extends State<MainPage> {
                     //   ),),
 
 
-                  ],
+    )],
                 ),
               ),
 
