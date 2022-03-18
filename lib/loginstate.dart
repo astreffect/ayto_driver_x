@@ -5,19 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:ayto_driver_x/signup.dart';
 import 'package:ayto_driver_x/mainpage.dart';
 import 'package:ayto_driver_x/login.dart';
-
-
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'After Layout - Good Example',
-      home: new LoginState(),
-    );
-  }
-}
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginState extends StatefulWidget {
   @override
@@ -28,51 +16,54 @@ class HomeScreenState extends State<LoginState> with AfterLayoutMixin<LoginState
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  bool otpVisibility = false;
-
-  String verificationID = "";
   String srm="";
   final _database=FirebaseDatabase.instance.ref();
-//int c=0;
+   int c=0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _activeListeners();
+    activeListeners();
   }
-  void _activeListeners(){
+  void activeListeners(){
     final User? user=auth.currentUser;
     final id=user?.uid ;
     _database.child('Driver/${user?.uid}/FirstName').onValue.listen((event) {
       final Object? description=event.snapshot.value ?? false;
       setState(() {
-        print('Description=$description');
+        print('DescriptionLS=$description');
         srm='$description';
-        /*if (description == null) {
-          // Safe
-          c=0;
+        print('SRMx1=$srm');
+
+        if(srm.compareTo('false')==0) {
+          c++;
         }
-        else
-          {
-            c=1;
-            //srm='$description' ?? "false";
-          }*/
+        rmn(srm);
+
+
+
       });
     });
+
   }
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(body: new Container(color: Colors.red));
+
+    return new Scaffold(body: new Container(color: Colors.white));
   }
 
   @override
   void afterFirstLayout(BuildContext context) {
     // Calling the same function "after layout" to resolve the issue.
-    rmn();
+
+        activeListeners();
   }
 
-  void rmn()
+  void rmn(String s)
   {
+    String ss=s;
+
     FirebaseAuth.instance
         .authStateChanges()
         .listen((User? user) {
@@ -84,19 +75,32 @@ class HomeScreenState extends State<LoginState> with AfterLayoutMixin<LoginState
           MaterialPageRoute(
             builder: (context) => LoginScreen(),
 
+
           ),
               (e) => false,
         );
-      } else {
+      }
+      else {
+
         print('User is signed in!');
-        if(srm.compareTo('false')==0) {
+        print('SRMxc=$ss');
+        Fluttertoast.showToast(
+          msg: srm,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        if(ss.compareTo('false')==0||srm.compareTo('false')==0||c>0) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => const SignupScreen(),
             ),
-          );
 
+          );
         }
         else {
           Navigator.pushAndRemoveUntil(

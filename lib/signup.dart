@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 
 import 'brand_colors.dart';
-import 'home.dart';
+import 'mainpage.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -220,7 +220,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Navigator.pushAndRemoveUntil(
     context,
     MaterialPageRoute(
-      builder: (context) => const Home(),
+      builder: (context) => const MainPage(),
     ),
           (e) => false,
   );
