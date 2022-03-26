@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 import 'mydrawer.dart';
 
@@ -25,29 +26,50 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   GlobalKey<ScaffoldState> scaffoldkey= GlobalKey<ScaffoldState>();
+
+  GoogleMapController? _controller;
+  Location currentLocation = Location();
+  Set<Marker> _markers={};
+  double x =0, y=0;
   late GoogleMapController mapController;
-  final Completer<GoogleMapController> _controller = Completer();
+  //final Completer<GoogleMapController> _controller = Completer();
   double mapBottomPadding =0;
-  var geolocator =Geolocator();
-  late Position currentPosition;
+  //var geolocator =Geolocator();
+  //late Position currentPosition;
+  //late Position currentLocation;
   String OnOf="Online";
   Color myColour=Colors.red;
 
-  void setPositionlocator() async{
+  void getLocation() async{
+    var location = await currentLocation.getLocation();
+    currentLocation.onLocationChanged.listen((LocationData loc){
 
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
-    currentPosition = position;
-    LatLng pos = LatLng(position.latitude,position.longitude);
-    CameraPosition cp = CameraPosition(target: pos,zoom: 14);
-    mapController.animateCamera(CameraUpdate.newCameraPosition(cp));
+      _controller?.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
+        target: LatLng(loc.latitude ?? 0.0,loc.longitude?? 0.0),
+        zoom: 12.0,
+      )));
+      print(loc.latitude);
+      print(loc.longitude);
+      setState(() {
+        _markers.add(Marker(markerId: MarkerId('Home'),
+            position: LatLng(loc.latitude ?? 0.0, loc.longitude ?? 0.0)
+        ));
+        x = loc.latitude!;
+        y = loc.longitude!;
 
 
+      });
+    });
   }
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(23.421070025226406, 86.20774238210358),
-    zoom: 14.4746,
-  );
+  @override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      getLocation();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -62,18 +84,23 @@ class _MainPageState extends State<MainPage> {
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
-            initialCameraPosition: _kGooglePlex,
+            initialCameraPosition:CameraPosition(
+              target: LatLng(x,y),
+              zoom: 12.0,
+            ),
             onMapCreated: (GoogleMapController controller){
-              _controller.complete(controller);
-              mapController= controller;
-              setState(() {
-                mapBottomPadding= 250;
-              });
-              setPositionlocator();
+              _controller = controller;
+
+              getLocation();
 
             },
 
+
+
+         markers: _markers,
           ),
+
+
           //drawer
           Positioned(
             top: 44,
