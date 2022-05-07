@@ -6,8 +6,10 @@ import 'package:ayto_driver_x/globalvariabels.dart';
 //import 'package:ayto_driver_x/tabs/hometab.dart';
 import 'package:ayto_driver_x/tabs/profiletab.dart';
 import 'package:ayto_driver_x/tabs/ratingstab.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:ayto_driver_x/progressdialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,7 +28,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   GlobalKey<ScaffoldState> scaffoldkey= GlobalKey<ScaffoldState>();
-
+  final FirebaseAuth _auth =FirebaseAuth.instance;
   GoogleMapController? _controller;
   Location currentLocation = Location();
   Set<Marker> _markers={};
@@ -39,6 +41,28 @@ class _MainPageState extends State<MainPage> {
   //late Position currentLocation;
   String OnOf="Online";
   Color myColour=Colors.red;
+  void registerUser() async{
+    final User user=_auth.currentUser!;
+    final id=user.uid;
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(status: 'Registering you...',),
+    );
+    DatabaseReference dref = FirebaseDatabase.instance.ref().child("ONLINE/${user.uid}");
+    Map map={
+      'UID':id,
+      'LAT':x,
+      'LON':y
+
+    };
+    dref.set(map);
+    FirebaseDatabase.instance.ref()
+        .child('OFFLINE/${user.uid}')
+        .remove();
+
+  }
 
   void getLocation() async{
     var location = await currentLocation.getLocation();
@@ -188,10 +212,46 @@ class _MainPageState extends State<MainPage> {
                       {
                         OnOf="Offline";
                         myColour=Colors.grey;
+                        final User user=_auth.currentUser!;
+                        final id=user.uid;
+
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) => ProgressDialog(status: '0FFLINE SET...',),
+                        );
+                        DatabaseReference dref = FirebaseDatabase.instance.ref().child("OFFLINE/${user.uid}");
+                        Map map={
+                          'UID':id
+                        };
+                        dref.set(map);
+                        FirebaseDatabase.instance.ref()
+                            .child('ONLINE/${user.uid}')
+                            .remove();
+
                       }
                       else{
                         OnOf="Online";
                         myColour=Colors.red;
+                        final User user=_auth.currentUser!;
+                        final id=user.uid;
+
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) => ProgressDialog(status: 'ONLINE SET...',),
+                        );
+                        DatabaseReference dref = FirebaseDatabase.instance.ref().child("ONLINE/${user.uid}");
+                        Map map={
+                          'UID':id,
+                          'LAT':x,
+                          'LON':y
+                        };
+                        dref.set(map);
+                        FirebaseDatabase.instance.ref()
+                            .child('OFFLINE/${user.uid}')
+                            .remove();
+
                       }
                     });
                   },
