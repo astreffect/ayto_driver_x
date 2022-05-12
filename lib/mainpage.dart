@@ -54,13 +54,13 @@ class _MainPageState extends State<MainPage> {
     Map map={
       'UID':id,
       'LAT':x,
-      'LON':y
-
+      'LON':y,
+      'state':1
     };
     dref.set(map);
-    FirebaseDatabase.instance.ref()
-        .child('OFFLINE/${user.uid}')
-        .remove();
+
+
+    Navigator.pop(context);
 
   }
 
@@ -220,14 +220,17 @@ class _MainPageState extends State<MainPage> {
                           context: context,
                           builder: (BuildContext context) => ProgressDialog(status: '0FFLINE SET...',),
                         );
-                        DatabaseReference dref = FirebaseDatabase.instance.ref().child("OFFLINE/${user.uid}");
+
+                        DatabaseReference dref = FirebaseDatabase.instance.ref().child("ONLINE/${user.uid}");
                         Map map={
-                          'UID':id
+                          'UID':id,
+                          'LAT':x,
+                          'LON':y,
+                          'state':0
                         };
                         dref.set(map);
-                        FirebaseDatabase.instance.ref()
-                            .child('ONLINE/${user.uid}')
-                            .remove();
+
+                        Navigator.pop(context);
 
                       }
                       else{
@@ -236,24 +239,27 @@ class _MainPageState extends State<MainPage> {
                         final User user=_auth.currentUser!;
                         final id=user.uid;
 
+
                         showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (BuildContext context) => ProgressDialog(status: 'ONLINE SET...',),
                         );
+
                         DatabaseReference dref = FirebaseDatabase.instance.ref().child("ONLINE/${user.uid}");
                         Map map={
                           'UID':id,
                           'LAT':x,
-                          'LON':y
+                          'LON':y,
+                          'state':1
                         };
                         dref.set(map);
-                        FirebaseDatabase.instance.ref()
-                            .child('OFFLINE/${user.uid}')
-                            .remove();
+
+
+                        Navigator.pop(context);
 
                       }
-                    });
+                       });
                   },
                     child:Container(
                       decoration: const BoxDecoration(
