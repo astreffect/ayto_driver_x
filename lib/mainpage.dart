@@ -32,7 +32,8 @@ class _MainPageState extends State<MainPage> {
   GoogleMapController? _controller;
   Location currentLocation = Location();
   Set<Marker> _markers={};
-  double x =0, y=0;
+  var x;
+  var y;
   late GoogleMapController mapController;
   //final Completer<GoogleMapController> _controller = Completer();
   double mapBottomPadding =0;
