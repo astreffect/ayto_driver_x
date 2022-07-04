@@ -35,12 +35,14 @@ class _MainPageState extends State<MainPage> {
   var x;
   var y;
   late GoogleMapController mapController;
+  final _database=FirebaseDatabase.instance.ref();
   //final Completer<GoogleMapController> _controller = Completer();
   double mapBottomPadding =0;
   //var geolocator =Geolocator();
   //late Position currentPosition;
   //late Position currentLocation;
   String OnOf="Online";
+  String srm="",srm1="",srm2="";
   Color myColour=Colors.red;
   void registerUser() async{
     final User user=_auth.currentUser!;
@@ -51,12 +53,16 @@ class _MainPageState extends State<MainPage> {
       context: context,
       builder: (BuildContext context) => ProgressDialog(status: 'Registering you...',),
     );
+
+
     DatabaseReference dref = FirebaseDatabase.instance.ref().child("ONLINE/${user.uid}");
     Map map={
       'UID':id,
       'LAT':x,
       'LON':y,
-      'state':1
+      'state':1,
+      'Name':(srm+" "+srm1),
+      'PhoneNumber':srm2
     };
     dref.set(map);
 
@@ -87,11 +93,43 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
     setState(() {
       getLocation();
+      super.initState();
+      _activeListeners();
+    });
+  }
+  FirebaseAuth auth = FirebaseAuth.instance;
+  void _activeListeners(){
+    final User? user=auth.currentUser;
+    final id=user?.uid ;
+    _database.child('Driver/${user?.uid}/FirstName').onValue.listen((event) {
+      final Object? description=event.snapshot.value ?? false;
+      setState(() {
+        print('Description=$description');
+        srm='$description';
+
+      });
+    });
+    _database.child('Driver/${user?.uid}/LastName').onValue.listen((event) {
+      final Object? description=event.snapshot.value ?? false;
+      setState(() {
+        print('Description=$description');
+        srm1='$description';
+
+      });
+    });
+    _database.child('Driver/${user?.uid}/AlternatePhoneNumber').onValue.listen((event) {
+      final Object? description=event.snapshot.value ?? false;
+      setState(() {
+        print('Description=$description');
+        srm2='$description';
+
+      });
     });
   }
 
@@ -227,7 +265,9 @@ class _MainPageState extends State<MainPage> {
                           'UID':id,
                           'LAT':x,
                           'LON':y,
-                          'state':0
+                          'state':0,
+                          'Name':(srm+" "+srm1),
+                          'PhoneNumber':srm2
                         };
                         dref.set(map);
 
@@ -252,7 +292,9 @@ class _MainPageState extends State<MainPage> {
                           'UID':id,
                           'LAT':x,
                           'LON':y,
-                          'state':1
+                          'state':1,
+                          'Name':(srm+" "+srm1),
+                          'PhoneNumber':srm2
                         };
                         dref.set(map);
 
@@ -288,28 +330,6 @@ class _MainPageState extends State<MainPage> {
                         ],
 
                       ),),
-                    //   SizedBox(height: 22,),
-                    // Container(
-                    //   decoration: const BoxDecoration(
-                    //       color: BrandColors.button,
-                    //       borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                    //       boxShadow:[ BoxShadow(
-                    //           color:  Colors.black26,
-                    //           blurRadius: 15.0,
-                    //           spreadRadius: 0.5,
-                    //           offset: Offset(0.7, 0.7)), ]
-                    //   ),
-                    //   child: Row(
-                    //     children: const [
-                    //       Padding(
-                    //         padding: EdgeInsets.all(8.0),
-                    //         child: Icon(Icons.home,color: Colors.black,),
-                    //       ),
-                    //       SizedBox(width: 22,),
-                    //       Text("Home"),
-                    //
-                    //     ],
-                    //   ),),
 
 
     )],
