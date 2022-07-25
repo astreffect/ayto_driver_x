@@ -24,6 +24,7 @@ class _SignupScreenState extends State<SignupScreen> {
   var phoneController = TextEditingController();
   var emailController = TextEditingController();
   var addressController=TextEditingController();
+  String dropdownValue = 'Cab';
   void showSnackBar(String title){
   final snackBar = SnackBar(content: Text(title, textAlign: TextAlign.center,style: const TextStyle(
   fontSize: 15,
@@ -47,6 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
     'Address':addressController.text,
     'Email':emailController.text,
     'AlternatePhoneNumber':user.phoneNumber,
+    'Type':dropdownValue,
 };
     dref.set(map);
 
@@ -141,6 +143,28 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     ),
+    DropdownButton<String>(
+  value: dropdownValue,
+  icon: const Icon(Icons.arrow_downward),
+    elevation: 16,
+    style: const TextStyle(color: Colors.deepPurple),
+    underline: Container(
+      height: 2,
+      color: Colors.deepPurpleAccent,
+    ),
+    onChanged: (String? newValue) {
+      setState(() {
+        dropdownValue = newValue!;
+      });
+    },
+    items: <String>['Cab', 'Ambulance']
+        .map<DropdownMenuItem<String>>((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList(),
+  ),
   /*EditTextMy.space,
   Container(
   width: 250,
