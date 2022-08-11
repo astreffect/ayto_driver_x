@@ -42,6 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
   builder: (BuildContext context) => ProgressDialog(status: 'Registering you...',),
   );
   DatabaseReference dref = FirebaseDatabase.instance.ref().child("Driver/${user.uid}");
+  DatabaseReference dref1 = FirebaseDatabase.instance.ref().child("Ambulance/${user.uid}");
   Map map={
   'FirstName':firstNameController.text,
     'LastName':lastNameController.text,
@@ -51,8 +52,12 @@ class _SignupScreenState extends State<SignupScreen> {
     'Type':dropdownValue,
 };
     dref.set(map);
+    dref1.set(map);
+
+
 
   }
+
 
 
   @override
@@ -147,10 +152,11 @@ class _SignupScreenState extends State<SignupScreen> {
   value: dropdownValue,
   icon: const Icon(Icons.arrow_downward),
     elevation: 16,
-    style: const TextStyle(color: Colors.deepPurple),
+    style: const TextStyle(color: Colors.lightGreen),
     underline: Container(
-      height: 2,
-      color: Colors.deepPurpleAccent,
+      height: 50,
+      width:250,
+      color: Colors.green,
     ),
     onChanged: (String? newValue) {
       setState(() {
