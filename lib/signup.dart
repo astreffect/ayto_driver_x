@@ -42,7 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
   builder: (BuildContext context) => ProgressDialog(status: 'Registering you...',),
   );
   DatabaseReference dref = FirebaseDatabase.instance.ref().child("Driver/${user.uid}");
-  DatabaseReference dref1 = FirebaseDatabase.instance.ref().child("Ambulance/${user.uid}");
+  DatabaseReference dref1 ;
   Map map={
   'FirstName':firstNameController.text,
     'LastName':lastNameController.text,
@@ -52,7 +52,12 @@ class _SignupScreenState extends State<SignupScreen> {
     'Type':dropdownValue,
 };
     dref.set(map);
-    dref1.set(map);
+    if(dropdownValue=='Ambulance'){
+      dref1= FirebaseDatabase.instance.ref().child("Ambulance/${user.uid}");
+      dref1.set(map);
+
+    }
+
 
 
 
