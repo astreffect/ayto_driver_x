@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="rkmgec.ac.in.ayto_driver_x">
    <application
-        android:label="ayto_driver_x"
+        android:label="Ayto Driver"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
